@@ -1,11 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from time import sleep
 import pandas as pd
 
 class BB_Scraper():
     def __init__(self) -> None:
-        self.driver = webdriver.Chrome()
+        print("Initializing bb_scraper...")
+        self.options = Options()
+        self.options.headless = True
+        self.driver = webdriver.Chrome(options= self.options)
         self.players_nationality = []
         self.players_name = []
         self.players_id = []
@@ -42,18 +46,22 @@ class BB_Scraper():
     def signin(self, username, password):
         self.user_name = username
         self.password = password
+        print(f"Signing in {self.user_name} account. Wait please...")
         self.driver.get("https://www.buzzerbeater.com/")
         self.id_button_click = self.driver.find_element(By.CLASS_NAME, "btn-outline-light").click()
-        sleep(2)
+        sleep(1)
         self.user_input = self.driver.find_element(By.ID, "txtLoginUserName").send_keys(self.user_name)
         self.password_input = self.driver.find_element(By.ID, "txtLoginPassword").send_keys(self.password)
         self.submit_userpassword = self.driver.find_element(By.ID, "btnLogin").click()
-        sleep(6)
+        sleep(4)
 
     def get_players_to_csv(self):
+        self.teams_loop = 1
+        print("Generating csv... Wait please.")
         for key,value in self.nationalities_dict.items():
+            
             self.driver.get(f"https://www.buzzerbeater.com/country/{value}/jnt/players.aspx")
-            sleep(1)
+            sleep(0.3)
             self.number_players_html = self.driver.find_element(By.ID, "cphContent_lblNumberOfPlayers")
             self.number_players = int(self.number_players_html.text.split()[0])
 
@@ -66,11 +74,14 @@ class BB_Scraper():
                 self.players_shape.append(player_shape.text.split("(")[1].replace(")",""))
                 player_dmi_id = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[1]/table/tbody/tr[2]/td")
                 self.players_dmi.append(player_dmi_id.text.split("DMI: ")[1].split("Edad: ")[0].strip())
-                
+             
             self.players_allinfo = [self.players_nationality, self.players_name, self.players_id, self.players_shape, self.players_dmi]
+            print(f"Team {key} scraped. {self.teams_loop}/{len(self.nationalities_dict)} to go.")
+            self.teams_loop += 1 
             
         self.df = pd.DataFrame(self.players_allinfo).transpose()
 
         self.df.to_csv("players_analysis.csv", mode = "a", index=False, header=["Nationality", "Name", "ID", "Shape", "DMI"])
+        print("'players_analysis.csv' generated!")
 
         
