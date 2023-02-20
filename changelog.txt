@@ -1,1 +1,4 @@
 -- VERSIÓN INICIAL --
+
+
+20230220-13:24 --> Añadir campo DMI al scrapping y más paises
