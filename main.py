@@ -4,8 +4,8 @@ from time import sleep
 import pandas as pd
 from bb_scraper import BB_Scraper
 
-username = "badino14"
-password = "ilovebasket14"
+username = input("Username: ")
+password = input("Password: ")
 
 bb_scraper = BB_Scraper()
 
