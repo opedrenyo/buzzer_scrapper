@@ -5,10 +5,8 @@ password = input("Password: ")
 
 bb_scraper = BB_Scraper()
 
-
 bb_scraper.signin(username, password)
 
-bb_scraper.get_players_to_csv()
-
+bb_scraper.menu()
 
 bb_scraper.driver.quit()

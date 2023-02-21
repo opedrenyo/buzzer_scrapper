@@ -2,3 +2,5 @@
 
 
 20230220-13:24 --> Añadir campo DMI al scrapping y más paises
+
+20230221-10:00 --> Añadir menú principal para permitir iniciar calendario, exportar equipo o hacer scrapping

@@ -85,3 +85,24 @@ class BB_Scraper():
 
         self.df.to_csv("players_analysis.csv", mode = "a", index=False, header=["Nationality", "Name", "ID", "Shape", "DMI", "Age"])
         print("'players_analysis.csv' generated!")
+
+
+    def menu(self):
+        newLine = '\n'
+        option = input("Que desea realizar?" + newLine  + "1 - Guardar formas semanales" + newLine + "2 - Exportar info de una seleccion" + newLine + "3 - Marcar calendario" + newLine)
+        print("Opcion elegida: " + option)
+        if option.strip() == '1':
+            print("Se procede a guardar las formas semanales")
+            self.get_players_to_csv()
+        elif option.strip() == '2':
+            teamId = input("Introduzca el ID del equipo a exportar")
+            #TODO implementar metodo de exportacion a traves de la bbdd
+            print("Exportando la información del equipo " + teamId)
+        elif option.strip() == '3':
+            season = input("Introduzca el número de temporada")
+            firstWeek = input("Introduzca la fecha del primer partido de la temporada")
+            print("Inicializando calendario de la temporada " + season)
+            #TODO implementar metodo de calculo de calendario de la temporada a partir de la primera fecha
+            #considerar también el formattear la fecha recibida a un formato unico
+        else:
+            print("Desconectando...")
