@@ -31,3 +31,11 @@ CREATE TABLE performance(
 	PRIMARY KEY(id_link, week)
 );
 
+
+CREATE TABLE performance(
+	id_link INTEGER REFERENCES linktable(id_link),
+	week SMALLINT NOT NULL,
+	DMI INTEGER NOT NULL,
+	shape SMALLINT NOT NULL,
+	PRIMARY KEY(id_link, week)
+);
