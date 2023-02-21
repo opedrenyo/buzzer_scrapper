@@ -86,7 +86,8 @@ class BB_Scraper():
         self.df.to_csv("players_analysis.csv", mode = "a", index=False, header=["Nationality", "Name", "ID", "Shape", "DMI", "Age"])
         print("'players_analysis.csv' generated!")
 
-
+    # JBC - 2023.02.21 - Main menu method
+    # inputs: 1 = save week's shape // 2 = export team's shape // 3 = add calendar
     def menu(self):
         newLine = '\n'
         option = input("Que desea realizar?" + newLine  + "1 - Guardar formas semanales" + newLine + "2 - Exportar info de una seleccion" + newLine + "3 - Marcar calendario" + newLine)
@@ -99,10 +100,29 @@ class BB_Scraper():
             #TODO implementar metodo de exportacion a traves de la bbdd
             print("Exportando la información del equipo " + teamId)
         elif option.strip() == '3':
-            season = input("Introduzca el número de temporada")
-            firstWeek = input("Introduzca la fecha del primer partido de la temporada")
+            season = input("Introduzca el número de temporada" + newLine)
+            # esto ya se pulirá para mostrar un calendario y elegir el dia directamente
+            dateInput = input("Introduzca la fecha del primer entreno de la temporada en formato DD/MM/YY" + newLine)
             print("Inicializando calendario de la temporada " + season)
-            #TODO implementar metodo de calculo de calendario de la temporada a partir de la primera fecha
-            #considerar también el formattear la fecha recibida a un formato unico
+            self.initCalendar(season, dateInput)
         else:
             print("Desconectando...")
+
+    # JBC - 2023.02.21 - Given first day of a season, calculate and save the 13 weeks of a season
+    # params: season = specifies the season to calculate // dateInput = specifies the first day of season
+    def initCalendar(self, season, dateInput):
+        # format given date to dd/mm/yyyy format
+        seasonDate = pd.to_datetime(dateInput, format='%d/%m/%y')
+
+        # a season has 13 weeks so we will iterate until we have added all weeks of a given season
+        for i in range(1, 14):
+            print("Insertado T" + season + " semana " + str(i) + " fecha " + seasonDate.strftime('%d/%m/%y'))
+            # insert into temporadas(season, i, date)
+            seasonDate = seasonDate + pd.DateOffset(days=7)
+        
+        print("Calendario de la temporada añadido!")
+
+
+
+
+
