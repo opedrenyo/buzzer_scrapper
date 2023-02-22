@@ -29,7 +29,6 @@ class BB_db():
         self.conn.commit()
         
         ## 2: insertamos los valores de las countries en la tabla countries. Si no, en los siguientes inserts podemos tener violaciones de PK.
-        
         print("Importing team countries information to bb_scraper database.")
         insert_countries = """
                     INSERT INTO countries (id_country, country) VALUES(%s, %s) 
@@ -38,7 +37,7 @@ class BB_db():
         for key, value in nations_dict.items():
             self.cur.execute(insert_countries, (value, key))
         self.conn.commit()
-        ## 2: insertamos los valores en la tabla link, si hay conflicto, DO NOTHING
+        ## 3: insertamos los valores en la tabla link, si hay conflicto, DO NOTHING
         print("Importing player's link information to bb_scraper database.")
         #TODO: Deberiamos asegurarnos que la última season ha sido insertada en la bbdd. (Idea1 : mediante un input? "are you sure last season is in db? Idea2: Que la fecha de import este entre start_date y end_date de alguna season en la bbdd?")
         insert_link = """
@@ -48,7 +47,7 @@ class BB_db():
         for index, row in dataframe.iterrows():  
             self.cur.execute(insert_link, (nations_dict[row.Nationality], row.ID, self.current_season()))
         self.conn.commit()
-        
+        ## 4: insertamos los valores en la performance, si hay conflicto, DO NOTHING y sacamos la week a partir de la fecha de inicio de season y la actual.
         print("Importing player's performance to bb_scraper database.")
         insert_performance = """
                     INSERT INTO performance (id_link, week, dmi, shape) VALUES (%s,%s,%s,%s)
