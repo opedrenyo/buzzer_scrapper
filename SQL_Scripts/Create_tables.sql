@@ -20,16 +20,8 @@ CREATE TABLE linktable(
 	id_country INTEGER REFERENCES countries(id_country),
 	id_player INTEGER REFERENCES players(id_player),
 	id_season SMALLINT REFERENCES seasons(id_season)
+	CONSTRAINT UNIQUE_KEY UNIQUE (id_country, id_player, id_season)
 );
-
-CREATE TABLE performance(
-	id_link INTEGER REFERENCES linktable(id_link),
-	week SMALLINT NOT NULL,
-	DMI INTEGER NOT NULL,
-	shape SMALLINT NOT NULL,
-	PRIMARY KEY(id_link, week)
-);
-
 
 CREATE TABLE performance(
 	id_link INTEGER REFERENCES linktable(id_link),

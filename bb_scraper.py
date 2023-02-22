@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from time import sleep
 import pandas as pd
 from dbconn import BB_db
+from datetime import datetime
 
 class BB_Scraper():
     def __init__(self) -> None:
@@ -12,6 +13,7 @@ class BB_Scraper():
         self.options = Options()
         self.options.headless = True
         self.driver = webdriver.Chrome(options= self.options)
+        self.players_date = []
         self.players_nationality = []
         self.players_name = []
         self.players_id = []
@@ -56,7 +58,7 @@ class BB_Scraper():
         self.user_input = self.driver.find_element(By.ID, "txtLoginUserName").send_keys(self.user_name)
         self.password_input = self.driver.find_element(By.ID, "txtLoginPassword").send_keys(self.password)
         self.submit_userpassword = self.driver.find_element(By.ID, "btnLogin").click()
-        sleep(4)
+        sleep(3)
 
     def get_players_info(self):
         self.teams_loop = 1
@@ -71,6 +73,7 @@ class BB_Scraper():
             for i in range(4,self.number_players+4):
                 player_name_id = self.driver.find_element(By.XPATH, f'/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[1]/div[4]')
                 player_shape = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[1]/table/tbody/tr[2]/td/a[2]")
+                self.players_date.append(datetime.now().strftime("%d/%m/%Y"))
                 self.players_nationality.append(key)
                 self.players_name.append(player_name_id.text.split("(")[0].strip())
                 self.players_id.append(player_name_id.text.split("(")[1].replace(")", ""))
@@ -79,13 +82,14 @@ class BB_Scraper():
                 self.players_dmi.append(players_info.text.splitlines()[2].split(": ")[1].strip())
                 self.players_age.append(players_info.text.splitlines()[3].split(": ")[1].strip())
              
-            self.players_allinfo = [self.players_nationality, self.players_name, self.players_id, self.players_shape, self.players_dmi, self.players_age]
+            self.players_allinfo = [self.players_date,self.players_nationality, self.players_name, self.players_id,
+                                    self.players_shape, self.players_dmi, self.players_age]
             print(f"Team {key} scraped. {self.teams_loop}/{len(self.nationalities_dict)} to go.")
             self.teams_loop += 1 
             
         self.df = pd.DataFrame(self.players_allinfo).transpose()
         
-        self.df.columns = ("Nationality","Name","ID","Shape","DMI","Age")
+        self.df.columns = ("Date","Nationality","Name","ID","Shape","DMI","Age")
         
         return self.df
 
@@ -102,8 +106,9 @@ class BB_Scraper():
             print("Se procede a guardar las formas semanales")
             
             bb_db_conn = BB_db(self.db_password)
-            bb_db_conn.insert_weekly_shapes(self.get_players_info())
+            bb_db_conn.insert_weekly_shapes(self.get_players_info(), self.nationalities_dict)
             bb_db_conn.close()
+            
         elif option.strip() == '2':
             teamId = input("Introduzca el ID del equipo a exportar")
             #TODO implementar metodo de exportacion a traves de la bbdd
@@ -121,13 +126,13 @@ class BB_Scraper():
     # params: season = specifies the season to calculate // dateInput = specifies the first day of season
     def initCalendar(self, season, dateInput):
         # format given date to dd/mm/yyyy format
-        seasonDate = pd.to_datetime(dateInput, format='%d/%m/%y')
+        seasonDate = pd.to_datetime(dateInput, format='%d/%m/%Y')
         bb_db_conn = BB_db(self.db_password)
         bb_db_conn.insert_new_season(season, seasonDate)
         bb_db_conn.close()
         # a season has 13 weeks so we will iterate until we have added all weeks of a given season
         for i in range(1, 14):
-            print("Insertado T" + season + " semana " + str(i) + " fecha " + seasonDate.strftime('%d/%m/%y'))
+            print("Insertado T" + season + " semana " + str(i) + " fecha " + seasonDate.strftime('%d/%m/%Y'))
             # insert into temporadas(season, i, date)
             seasonDate = seasonDate + pd.DateOffset(days=7)
         
