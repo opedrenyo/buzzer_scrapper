@@ -10,8 +10,7 @@ CREATE TABLE players(
 );
 
 CREATE TABLE seasons(
-	id_season SERIAL PRIMARY KEY,
-	season SMALLINT UNIQUE NOT NULL,
+	id_season SMALLINT PRIMARY KEY,
 	start_date DATE UNIQUE NOT NULL,
 	end_date DATE UNIQUE NOT NULL
 );
