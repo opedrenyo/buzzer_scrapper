@@ -3,9 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 import pandas as pd
+from dbconn import BB_db
 
 class BB_Scraper():
     def __init__(self) -> None:
+        self.db_password = input("Database Password: ")
         print("Initializing bb_scraper...")
         self.options = Options()
         self.options.headless = True
@@ -56,7 +58,7 @@ class BB_Scraper():
         self.submit_userpassword = self.driver.find_element(By.ID, "btnLogin").click()
         sleep(4)
 
-    def get_players_to_csv(self):
+    def get_players_info(self):
         self.teams_loop = 1
         print("Generating csv... Wait please.")
         for key,value in self.nationalities_dict.items():
@@ -70,7 +72,7 @@ class BB_Scraper():
                 player_name_id = self.driver.find_element(By.XPATH, f'/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[1]/div[4]')
                 player_shape = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[1]/table/tbody/tr[2]/td/a[2]")
                 self.players_nationality.append(key)
-                self.players_name.append(player_name_id.text.split("(")[0])
+                self.players_name.append(player_name_id.text.split("(")[0].strip())
                 self.players_id.append(player_name_id.text.split("(")[1].replace(")", ""))
                 self.players_shape.append(player_shape.text.split("(")[1].replace(")",""))        
                 players_info = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[1]/table/tbody/tr[2]/td")
@@ -82,19 +84,26 @@ class BB_Scraper():
             self.teams_loop += 1 
             
         self.df = pd.DataFrame(self.players_allinfo).transpose()
+        
+        self.df.columns = ("Nationality","Name","ID","Shape","DMI","Age")
+        
+        return self.df
 
-        self.df.to_csv("players_analysis.csv", mode = "a", index=False, header=["Nationality", "Name", "ID", "Shape", "DMI", "Age"])
-        print("'players_analysis.csv' generated!")
+
 
     # JBC - 2023.02.21 - Main menu method
     # inputs: 1 = save week's shape // 2 = export team's shape // 3 = add calendar
     def menu(self):
+        
         newLine = '\n'
         option = input("Que desea realizar?" + newLine  + "1 - Guardar formas semanales" + newLine + "2 - Exportar info de una seleccion" + newLine + "3 - Marcar calendario" + newLine)
         print("Opcion elegida: " + option)
         if option.strip() == '1':
             print("Se procede a guardar las formas semanales")
-            self.get_players_to_csv()
+            
+            bb_db_conn = BB_db(self.db_password)
+            bb_db_conn.insert_weekly_shapes(self.get_players_info())
+            bb_db_conn.close()
         elif option.strip() == '2':
             teamId = input("Introduzca el ID del equipo a exportar")
             #TODO implementar metodo de exportacion a traves de la bbdd
@@ -113,7 +122,9 @@ class BB_Scraper():
     def initCalendar(self, season, dateInput):
         # format given date to dd/mm/yyyy format
         seasonDate = pd.to_datetime(dateInput, format='%d/%m/%y')
-
+        bb_db_conn = BB_db(self.db_password)
+        bb_db_conn.insert_new_season(season, seasonDate)
+        bb_db_conn.close()
         # a season has 13 weeks so we will iterate until we have added all weeks of a given season
         for i in range(1, 14):
             print("Insertado T" + season + " semana " + str(i) + " fecha " + seasonDate.strftime('%d/%m/%y'))
