@@ -5,6 +5,7 @@ CREATE TABLE countries(
 
 CREATE TABLE players(
 	id_player INTEGER PRIMARY KEY,
+	id_country INTEGER NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	age SMALLINT NOT NULL
 );
@@ -15,18 +16,11 @@ CREATE TABLE seasons(
 	end_date DATE UNIQUE NOT NULL
 );
 
-CREATE TABLE linktable(
-	id_link SERIAL PRIMARY KEY,
-	id_country INTEGER REFERENCES countries(id_country),
-	id_player INTEGER REFERENCES players(id_player),
-	id_season SMALLINT REFERENCES seasons(id_season)
-	CONSTRAINT UNIQUE_KEY UNIQUE (id_country, id_player, id_season)
-);
-
 CREATE TABLE performance(
-	id_link INTEGER REFERENCES linktable(id_link),
+	id_player INTEGER REFERENCES players(id_player),
+	id_season INTEGER REFERENCES seasons(id_season),
 	week SMALLINT NOT NULL,
 	DMI INTEGER NOT NULL,
 	shape SMALLINT NOT NULL,
-	PRIMARY KEY(id_link, week)
+	PRIMARY KEY(id_player, id_season, week)
 );
