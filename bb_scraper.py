@@ -62,7 +62,6 @@ class BB_Scraper():
 
     def get_players_info(self):
         self.teams_loop = 1
-        print("Generating csv... Wait please.")
         for key,value in self.nationalities_dict.items():
             
             self.driver.get(f"https://www.buzzerbeater.com/country/{value}/jnt/players.aspx")
