@@ -15,7 +15,7 @@ class BB_db():
     def close(self):
         self.conn.close()
         
-    def insert_weekly_shapes(self, dataframe:pd.DataFrame, nations_dict:dict):
+    def query_insert_weekly_shapes(self, dataframe:pd.DataFrame, nations_dict:dict):
         ## 1: insertamos los valores que no existen en la tabla players
         print("Importing players to bb_scraper database")
         insert_players = """
@@ -77,5 +77,19 @@ class BB_db():
        
         return self.cur.fetchone()
     
-    
+    def last_week(self):
+        self.cur.execute("""SELECT week FROM performance ORDER BY week DESC LIMIT 1""")
        
+        return self.cur.fetchone()
+    
+    
+    def query_country_export(self, team_nation):
+        select_query = f"""SELECT c.country, p.name, perf.week, perf.id_season, perf.dmi, perf.shape
+                        FROM performance AS perf INNER JOIN players AS p ON perf.id_player = p.id_player
+                        INNER JOIN countries AS c ON p.id_country = c.id_country WHERE c.country = '{team_nation}'
+                        ORDER BY name """
+        
+        self.cur.execute(select_query)
+        
+        return self.cur.fetchall()
+        

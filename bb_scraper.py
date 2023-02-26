@@ -5,6 +5,7 @@ from time import sleep
 import pandas as pd
 from dbconn import BB_db
 from datetime import datetime
+import os
 
 class BB_Scraper():
     def __init__(self) -> None:
@@ -103,15 +104,15 @@ class BB_Scraper():
         print("Opcion elegida: " + option)
         if option.strip() == '1':
             print("Se procede a guardar las formas semanales")
-            
-            bb_db_conn = BB_db(self.db_password)
-            bb_db_conn.insert_weekly_shapes(self.get_players_info(), self.nationalities_dict)
-            bb_db_conn.close()
+            self.insert_weekly_shapes()
             
         elif option.strip() == '2':
-            teamId = input("Introduzca el ID del equipo a exportar")
+            self.countries = list(self.nationalities_dict.keys())
+            self.team_nation = input(f"Introduzca la selección a exportar ({self.countries}):  ").title()
             #TODO implementar metodo de exportacion a traves de la bbdd
-            print("Exportando la información del equipo " + teamId)
+            print("Exportando la información del equipo " + self.team_nation)
+            self.export_country_season()
+            
         elif option.strip() == '3':
             season = input("Introduzca el número de temporada" + newLine)
             # esto ya se pulirá para mostrar un calendario y elegir el dia directamente
@@ -136,6 +137,24 @@ class BB_Scraper():
             seasonDate = seasonDate + pd.DateOffset(days=7)
         
         print("Calendario de la temporada añadido!")
+        
+    def export_country_season(self):
+        bb_db_conn = BB_db(self.db_password)
+        export_data = bb_db_conn.query_country_export(self.team_nation)
+        df_export = pd.DataFrame(export_data, columns=["Nationality", "Name", "Week", "Season", "DMI", "Shape"])
+        dir_exists = os.path.exists(f"{self.team_nation}")
+        if not dir_exists:
+            os.makedirs(f"exports/{self.team_nation}")
+            df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.last_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)   
+        else:
+            df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.last_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)   
+        
+        bb_db_conn.close()
+        
+    def insert_weekly_shapes(self):
+        bb_db_conn = BB_db(self.db_password)
+        bb_db_conn.query_insert_weekly_shapes(self.get_players_info(), self.nationalities_dict)
+        bb_db_conn.close()
 
 
 
