@@ -141,7 +141,7 @@ class BB_Scraper():
         bb_db_conn = BB_db(self.db_password)
         export_data = bb_db_conn.query_country_export(self.team_nation)
         df_export = pd.DataFrame(export_data, columns=["Nationality", "Name", "Week", "Season", "DMI", "Shape"])
-        dir_exists = os.path.exists(f"{self.team_nation}")
+        dir_exists = os.path.exists(f"exports/{self.team_nation}")
         if not dir_exists:
             os.makedirs(f"exports/{self.team_nation}")
             df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.last_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)   
