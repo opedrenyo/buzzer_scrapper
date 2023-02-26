@@ -109,7 +109,6 @@ class BB_Scraper():
         elif option.strip() == '2':
             self.countries = list(self.nationalities_dict.keys())
             self.team_nation = input(f"Introduzca la selección a exportar ({self.countries}):  ").title()
-            #TODO implementar metodo de exportacion a traves de la bbdd
             print("Exportando la información del equipo " + self.team_nation)
             self.export_country_season()
             
