@@ -22,6 +22,7 @@ class BB_Scraper():
         self.players_dmi = []
         self.players_age = []
         self.nationalities_dict = {
+            "Spain": 7,
             "Germany": 8, 
             "Belgium": 13,
             "Letonia": 46,
@@ -154,6 +155,9 @@ class BB_Scraper():
         bb_db_conn = BB_db(self.db_password)
         bb_db_conn.query_insert_weekly_shapes(self.get_players_info(), self.nationalities_dict)
         bb_db_conn.close()
+        
+        
+        
 
 
 
