@@ -42,8 +42,8 @@ class Writer():
                 for player in formatted_player_ID_list:
                     player_name = player.split("[u]")[1].split("[")[0].strip()
                     df_shape_dmi = df[["Shape", "DMI"]].loc[df.Name == player_name]
+                    file.write(f"{player} -->")
                     for index,row in df_shape_dmi.iterrows():
-                        file.write(f"{player} -->")
                         if not index == df_shape_dmi.index[-1]:
                             file.write(f" F{row.Shape}: {row.DMI} //")
                         else:
