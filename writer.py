@@ -43,9 +43,8 @@ class Writer():
                     player_name = player.split("[u]")[1].split("[")[0].strip()
                     df_shape_dmi = df[["Shape", "DMI"]].loc[df.Name == player_name]
                     for index,row in df_shape_dmi.iterrows():
+                        file.write(f"{player} -->")
                         if not index == df_shape_dmi.index[-1]:
-                        ##TODO: encontrar manera de poner las formas y DMIs uno detras del otro con el separador //
-                            file.write(f"{player} -->")
                             file.write(f" F{row.Shape}: {row.DMI} //")
                         else:
                             file.write(f" F{row.Shape}: {self.bold(row.DMI)}\n\n")

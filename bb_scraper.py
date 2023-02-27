@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 from time import sleep
 import pandas as pd
 from dbconn import BB_db
@@ -71,6 +72,8 @@ class BB_Scraper():
             sleep(0.3)
             self.number_players_html = self.driver.find_element(By.ID, "cphContent_lblNumberOfPlayers")
             self.number_players = int(self.number_players_html.text.split()[0])
+            self.select = Select(self.driver.find_element(By.ID, 'cphContent_ddlsortBy'))
+            self.select.select_by_value("4")
 
             for i in range(4,self.number_players+4):
                 player_name_id = self.driver.find_element(By.XPATH, f'/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[1]/div[4]')

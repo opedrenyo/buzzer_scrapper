@@ -87,7 +87,7 @@ class BB_db():
         select_query = f"""SELECT c.country, p.id_player, p.name, perf.week, perf.id_season, perf.dmi, perf.shape
                         FROM performance AS perf INNER JOIN players AS p ON perf.id_player = p.id_player
                         INNER JOIN countries AS c ON p.id_country = c.id_country WHERE c.country = '{team_nation}'
-                        ORDER BY name, perf.week """
+                        ORDER BY perf.week """
         
         self.cur.execute(select_query)
         
