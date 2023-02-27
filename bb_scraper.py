@@ -6,6 +6,7 @@ import pandas as pd
 from dbconn import BB_db
 from datetime import datetime
 import os
+from writer import Writer
 
 class BB_Scraper():
     def __init__(self) -> None:
@@ -112,6 +113,7 @@ class BB_Scraper():
             self.team_nation = input(f"Introduzca la selección a exportar ({self.countries}):  ").title()
             print("Exportando la información del equipo " + self.team_nation)
             self.export_country_season()
+            Writer(self.db_password, self.team_nation)
             
         elif option.strip() == '3':
             season = input("Introduzca el número de temporada" + newLine)
@@ -141,13 +143,12 @@ class BB_Scraper():
     def export_country_season(self):
         bb_db_conn = BB_db(self.db_password)
         export_data = bb_db_conn.query_country_export(self.team_nation)
-        df_export = pd.DataFrame(export_data, columns=["Nationality", "Name", "Week", "Season", "DMI", "Shape"])
+        df_export = pd.DataFrame(export_data, columns=["Nationality", "ID_player", "Name", "Week", "Season", "DMI", "Shape"])
         dir_exists = os.path.exists(f"exports/{self.team_nation}")
         if not dir_exists:
             os.makedirs(f"exports/{self.team_nation}")
-            df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.last_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)   
-        else:
-            df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.last_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)   
+        
+        df_export.to_csv(f"exports/{self.team_nation}/{self.team_nation}_W{bb_db_conn.current_week()[0]}_T{bb_db_conn.current_season()[0]}.csv", index=False)    
         
         bb_db_conn.close()
         
@@ -155,6 +156,9 @@ class BB_Scraper():
         bb_db_conn = BB_db(self.db_password)
         bb_db_conn.query_insert_weekly_shapes(self.get_players_info(), self.nationalities_dict)
         bb_db_conn.close()
+        
+
+        
         
         
         

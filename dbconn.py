@@ -77,17 +77,17 @@ class BB_db():
        
         return self.cur.fetchone()
     
-    def last_week(self):
+    def current_week(self):
         self.cur.execute("""SELECT week FROM performance ORDER BY week DESC LIMIT 1""")
        
         return self.cur.fetchone()
     
     
     def query_country_export(self, team_nation):
-        select_query = f"""SELECT c.country, p.name, perf.week, perf.id_season, perf.dmi, perf.shape
+        select_query = f"""SELECT c.country, p.id_player, p.name, perf.week, perf.id_season, perf.dmi, perf.shape
                         FROM performance AS perf INNER JOIN players AS p ON perf.id_player = p.id_player
                         INNER JOIN countries AS c ON p.id_country = c.id_country WHERE c.country = '{team_nation}'
-                        ORDER BY name """
+                        ORDER BY name, perf.week """
         
         self.cur.execute(select_query)
         
