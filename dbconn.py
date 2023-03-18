@@ -1,7 +1,7 @@
 import psycopg2 as pg2
-import csv
 import pandas as pd
 import datetime
+from datetime import datetime as dt
 import math
 
 class BB_db():
@@ -49,16 +49,26 @@ class BB_db():
         
             start_valid_season = datetime.datetime(int(start_date_season.strftime("%Y")), 
                                                int(start_date_season.strftime("%m")), 
-                                               int(start_date_season.strftime("%d")))
-            actual_date = pd.to_datetime(row.Date, format='%d/%m/%Y')    
-            actual_valid_date = actual_date.to_pydatetime()
+                                               int(start_date_season.strftime("%d")),
+                                               int(start_date_season.strftime("%H")),
+                                               int(start_date_season.strftime("%M")))
+            
+            actual_valid_date = datetime.datetime(int(dt.now().strftime("%Y")), 
+                                               int(dt.now().strftime("%m")), 
+                                               int(dt.now().strftime("%d")),
+                                               int(dt.now().strftime("%H")),
+                                               int(dt.now().strftime("%M")))
 
-            week = math.ceil((actual_valid_date-start_valid_season).days/7)
+            # TODO HAY QUE DARLE UNA VUELTA A ESTO PORQUE NO SE PORQUE COÑO DEVUELVE UN DIA MENOS
+            resta = actual_valid_date-start_valid_season
+
+            week = math.ceil(resta.days/7)
             self.cur.execute(insert_performance, (row.ID, self.current_season()[0], week, row.DMI, row.Shape))
             
         self.conn.commit()
         
     def insert_new_season(self, season, start_date):
+        #TODO Aqui deberia haber una validacion de que la season a insertar no estuviese insertada previamente
         print(f"Importing season {season} to bb_scraper database")
         end_date = start_date + datetime.timedelta(days=91)
         insert_season = """

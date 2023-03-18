@@ -130,8 +130,10 @@ class BB_Scraper():
     # JBC - 2023.02.21 - Given first day of a season, calculate and save the 13 weeks of a season
     # params: season = specifies the season to calculate // dateInput = specifies the first day of season
     def initCalendar(self, season, dateInput):
-        # format given date to dd/mm/yyyy format
-        seasonDate = pd.to_datetime(dateInput, format='%d/%m/%Y')
+        # El formato cambia a dd/MM/yyyy hh:mm:ss ya que en BBDD pasa a ser timestamp y haremos calculos segun hora
+        # Le añadimos las 13h que es cuando se actualizan las ultimas formas
+        dateInput = dateInput + " 13:00:00"
+        seasonDate = pd.to_datetime(dateInput, format='%d/%m/%Y %H:%M:%S')
         bb_db_conn = BB_db(self.db_password)
         bb_db_conn.insert_new_season(season, seasonDate)
         bb_db_conn.close()

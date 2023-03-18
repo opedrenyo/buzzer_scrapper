@@ -24,3 +24,7 @@ CREATE TABLE performance(
 	shape SMALLINT NOT NULL,
 	PRIMARY KEY(id_player, id_season, week)
 );
+
+-- modificar columnas de tipo date a timestamp para añadir hora, minuto, segundo
+ALTER TABLE public.seasons ALTER COLUMN start_date TYPE timestamp USING start_date::timestamp;
+ALTER TABLE public.seasons ALTER COLUMN end_date TYPE timestamp USING end_date::timestamp;
