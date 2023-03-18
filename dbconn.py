@@ -59,10 +59,13 @@ class BB_db():
                                                int(dt.now().strftime("%H")),
                                                int(dt.now().strftime("%M")))
 
-            # TODO HAY QUE DARLE UNA VUELTA A ESTO PORQUE NO SE PORQUE COÑO DEVUELVE UN DIA MENOS
             resta = actual_valid_date-start_valid_season
+        
+            dias = resta.days
+            if(resta.seconds > 0 ):
+                dias = resta.days+1
 
-            week = math.ceil(resta.days/7)
+            week = math.ceil(dias/7)
             self.cur.execute(insert_performance, (row.ID, self.current_season()[0], week, row.DMI, row.Shape))
             
         self.conn.commit()
