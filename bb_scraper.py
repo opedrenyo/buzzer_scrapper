@@ -23,34 +23,20 @@ class BB_Scraper():
         self.players_shape = []
         self.players_dmi = []
         self.players_age = []
+        self.players_jumpshot = []
+        self.players_shotrange = []
+        self.players_outside_defense = []
+        self.players_handling = []
+        self.players_driving = []
+        self.players_passes = []
+        self.players_inside_shot = []
+        self.players_inside_defense = []
+        self.players_rebounds = []
+        self.players_blocks = []
+        self.players_resist = []
+        self.players_free_throws = []
         self.nationalities_dict = {
-            "Spain": 7,
-            "Germany": 8, 
-            "Belgium": 13,
-            "Letonia": 46,
-            "Holanda": 16,
-            "Irlanda": 44,
-            "Austria": 27,
-            "Israel": 15,
-            "Grecia": 12,
-            "Ucrania": 33,
-            "Inglaterra": 14,
-            "Polonia": 58,
-            "Francia": 11,
-            "Eslovenia": 66,
-            "Romania": 61,
-            "Hungria": 48,
-            "Italia": 10,
-            "Portugal": 18,
-            "Finlandia": 69,
-            "Lituania": 20,
-            "Estonia": 41,
-            "Rusia": 19,
-            "Serbia": 29,
-            "Turquia": 6,
-            "Eslovaquia": 67,
-            "Bosnia": 35,
-            "Ceska":37
+            "Serbia": 29
         }
         
     def signin(self, username, password):
@@ -87,15 +73,51 @@ class BB_Scraper():
                 players_info = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[1]/table/tbody/tr[2]/td")
                 self.players_dmi.append(players_info.text.split("DMI: ")[1].split("Edad: ")[0].strip())
                 self.players_age.append(players_info.text.split("Edad: ")[1].split("Altura: ")[0].strip())
-             
+
+                # si hay visibilidad de la tabla de skills es que el jugador esta en venta, lo marcamos para chupar las skills despues
+                try:
+                    player_skills = self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody")
+                except:
+                    player_skills = None;
+
+                # puede parecer coñazo pero asi guardamos el valor de todas las skills a traves de la tabla sin importar el idioma
+                if player_skills != None:
+                    self.players_jumpshot.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[1]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_shotrange.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[1]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_outside_defense.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[2]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_handling.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[2]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_driving.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[3]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_passes.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[3]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_inside_shot.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[4]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_inside_defense.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[4]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_rebounds.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[5]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_blocks.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[5]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_resist.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[6]/td[1]/a").text.split("(")[1].replace(")","").strip())
+                    self.players_free_throws.append(self.driver.find_element(By.XPATH, f"/html/body/div[2]/form/div[5]/div/div[3]/div[2]/div/div[6]/div[{i}]/div[2]/div[3]/table/tbody/tr/td[2]/table/tbody/tr[6]/td[2]/a").text.split("(")[1].replace(")","").strip())
+                else:
+                    self.players_jumpshot.append(None)
+                    self.players_shotrange.append(None)
+                    self.players_outside_defense.append(None)
+                    self.players_handling.append(None)
+                    self.players_driving.append(None)
+                    self.players_passes.append(None)
+                    self.players_inside_shot.append(None)
+                    self.players_inside_defense.append(None)
+                    self.players_rebounds.append(None)
+                    self.players_blocks.append(None)
+                    self.players_resist.append(None)
+                    self.players_free_throws.append(None)
+
             self.players_allinfo = [self.players_date,self.players_nationality, self.players_name, self.players_id,
-                                    self.players_shape, self.players_dmi, self.players_age]
+                                    self.players_shape, self.players_dmi, self.players_age, self.players_jumpshot, self.players_shotrange,
+                                    self.players_outside_defense, self.players_handling, self.players_driving, self.players_passes, self.players_inside_shot,
+                                    self.players_inside_defense, self.players_rebounds, self.players_blocks, self.players_resist, self.players_free_throws]
             print(f"Team {key} scraped. {self.teams_loop}/{len(self.nationalities_dict)} to go.")
             self.teams_loop += 1 
             
         self.df = pd.DataFrame(self.players_allinfo).transpose()
         
-        self.df.columns = ("Date","Nationality","Name","ID","Shape","DMI","Age")
+        self.df.columns = ("Date","Nationality","Name","ID","Shape","DMI","Age","Jumpshot","Shot_range","Outside_defense","Handling","Driving","Passes","Inside_shot","Inside_defense","Rebounds","Blocks","Resist","Free_throws")
         
         return self.df
 

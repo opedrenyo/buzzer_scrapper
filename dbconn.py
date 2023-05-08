@@ -37,9 +37,25 @@ class BB_db():
         for key, value in nations_dict.items():
             self.cur.execute(insert_countries, (value, key))
         self.conn.commit()
+
+        ## 3: insertamos skills si se han encontrado
+        print("Import skills information to bb_scrapper database")
+        insert_skills = """
+                    INSERT INTO skills (id_player,check_date,jumpshot,shot_range,outside_defense,handling,driving,passes,inside_shot,inside_defense,rebounds,blocks,resist,free_throws) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT ON CONSTRAINT skills_pkey DO NOTHING;
+        """
+
+        for index, row in dataframe.iterrows():
+            # si jumpshot tiene resultados asumimos que hay skills y grabamos, si no no para no llenar la bbdd de nulls
+            if row.Jumpshot != None:
+                self.cur.execute(insert_skills,(row.ID, dt.now(), row.Jumpshot, row.Shot_range, row.Outside_defense, row.Handling, row.Driving, row.Inside_shot, row.Inside_defense, row.Rebounds, row.Blocks, row.Resist, row.Free_throws))
+        
+        self.conn.commit()
+
         #TODO: Deberiamos asegurarnos que la última season ha sido insertada en la bbdd. (Idea1 : mediante un input? "are you sure last season is in db? Idea2: Que la fecha de import este entre start_date y end_date de alguna season en la bbdd?")
         
-        ## 3: insertamos los valores en la performance, si hay conflicto, DO NOTHING y sacamos la week a partir de la fecha de inicio de season y la actual.
+        ## 4: insertamos los valores en la performance, si hay conflicto, DO NOTHING y sacamos la week a partir de la fecha de inicio de season y la actual.
         print("Importing player's performance to bb_scraper database.")
         insert_performance = """
                     INSERT INTO performance (id_player,id_season,week, dmi, shape) VALUES (%s,%s,%s,%s,%s)
