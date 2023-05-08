@@ -49,7 +49,7 @@ class BB_db():
         for index, row in dataframe.iterrows():
             # si jumpshot tiene resultados asumimos que hay skills y grabamos, si no no para no llenar la bbdd de nulls
             if row.Jumpshot != None:
-                self.cur.execute(insert_skills,(row.ID, dt.now(), row.Jumpshot, row.Shot_range, row.Outside_defense, row.Handling, row.Driving, row.Inside_shot, row.Inside_defense, row.Rebounds, row.Blocks, row.Resist, row.Free_throws))
+                self.cur.execute(insert_skills,(row.ID, dt.now(), row.Jumpshot, row.Shot_range, row.Outside_defense, row.Handling, row.Driving, row.Passes, row.Inside_shot, row.Inside_defense, row.Rebounds, row.Blocks, row.Resist, row.Free_throws))
         
         self.conn.commit()
 

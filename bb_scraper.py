@@ -36,7 +36,33 @@ class BB_Scraper():
         self.players_resist = []
         self.players_free_throws = []
         self.nationalities_dict = {
-            "Serbia": 29
+            "Spain": 7,
+            "Germany": 8, 
+            "Belgium": 13,
+            "Letonia": 46,
+            "Holanda": 16,
+            "Irlanda": 44,
+            "Austria": 27,
+            "Israel": 15,
+            "Grecia": 12,
+            "Ucrania": 33,
+            "Inglaterra": 14,
+            "Polonia": 58,
+            "Francia": 11,
+            "Eslovenia": 66,
+            "Romania": 61,
+            "Hungria": 48,
+            "Italia": 10,
+            "Portugal": 18,
+            "Finlandia": 69,
+            "Lituania": 20,
+            "Estonia": 41,
+            "Rusia": 19,
+            "Serbia": 29,
+            "Turquia": 6,
+            "Eslovaquia": 67,
+            "Bosnia": 35,
+            "Ceska":37
         }
         
     def signin(self, username, password):
