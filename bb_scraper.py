@@ -62,7 +62,22 @@ class BB_Scraper():
             "Turquia": 6,
             "Eslovaquia": 67,
             "Bosnia": 35,
-            "Ceska":37
+            "Ceska":37,
+            "USA":1,
+            "Argentina":2,
+            "Brasil":3,
+            "Chile":21,
+            "Mexico":30,
+            "Venezuela":74,
+            "HongKong":45,
+            "Filipinas":57,
+            "Singapur":65,
+            "Australia":17,
+            "Taiwan":70,
+            "China":5,
+            "Misr":51,
+            "Sudafrica":68,
+            "Marruecos":32
         }
         
     def signin(self, username, password):
