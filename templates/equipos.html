@@ -1,13 +1,12 @@
 {% extends "layouts/layout.html" %}
 {% block content%}
-<!-- Example split danger button -->
-<div class="dropdown float-end margin-right">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        Paises
+<div class="btn-group float-end">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      Paises
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
         {% for row in countries %}
-        <li><a class="dropdown-item" href="#">{{row.name}}</a></li>
+            <li><a class="dropdown-item" href="{{get_players}}">{{row[0]}}</a></li>
         {% endfor %}
     </ul>
 </div>

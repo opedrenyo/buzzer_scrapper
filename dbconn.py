@@ -121,4 +121,10 @@ class BB_db():
         self.cur.execute(select_query)
         
         return self.cur.fetchall()
-        
+    
+    def get_countries(self):
+        select_query = f"""SELECT country, id_country FROM countries order by id_country"""
+        self.cur.execute(select_query)
+
+        return self.cur.fetchall()
+    
