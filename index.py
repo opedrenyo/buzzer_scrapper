@@ -4,6 +4,9 @@ import pandas as pd
 
 app = Flask(__name__)
 
+countries = []
+players = []
+
 ## Link a la parte visual, de aqui llamaremos a las otras clases para realizar funcionalidades con los botones
 @app.route('/')
 def home():
@@ -11,19 +14,21 @@ def home():
 
 @app.route('/equipos')
 def equipos():
-    #select aqui de countries
     bb_db_conn = BB_db('ilovebasket14')
+    global countries
     countries = bb_db_conn.get_countries()
-    print(countries)
-    return render_template('equipos.html', countries=countries)
+    bb_db_conn.close()
+    return render_template('equipos.html', countries=countries, players = players)
 
 @app.route('/operaciones')
 def operaciones():
     return render_template('operaciones.html')
 
 def get_players(id_country):
-    print('entramos en get players')
-    return ''
+    bb_db_conn = BB_db('ilovebasket14')
+    global players 
+    players = bb_db_conn.query_country_export(id_country)
+    bb_db_conn.close()
 
 
 

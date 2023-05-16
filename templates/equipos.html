@@ -6,7 +6,7 @@
     </button>
     <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
         {% for row in countries %}
-            <li><a class="dropdown-item" href="{{get_players}}">{{row[0]}}</a></li>
+            <li><a class="dropdown-item" href="#">{{row[0]}}</a></li>
         {% endfor %}
     </ul>
 </div>
@@ -24,10 +24,10 @@
     <tbody class="table-group-divider">
         {% for row in players %}
       <tr>
-        <th scope="row">{{row.id}}</th>
-        <td>{{row.name}}</td>
-        <td>{{row.shape}}</td>
-        <td>{{row.dmi}}</td>
+        <th scope="row">{{row[1]}}</th>
+        <td>{{row[2]}}</td>
+        <td>{{row[7]}}</td>
+        <td>{{row[6]}}</td>
         <td>desplegable</td>
         {% endfor %}
       </tr>
