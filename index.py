@@ -19,11 +19,13 @@ def home():
 
 @app.route('/equipos')
 def equipos():
+    #select aqui de countries
     return render_template('equipos.html', countries=countries, players=players)
 
-@app.route('/')
+@app.route('/operaciones')
 def operaciones():
     return render_template('operaciones.html')
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='80', debug=True)
