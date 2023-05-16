@@ -3,3 +3,15 @@ body{
     background: -webkit-linear-gradient(to right, #f8b500, #fceabb);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #f8b500, #fceabb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
 }
+
+.margin-top{
+    margin-top: 5%;
+}
+
+.margin-left{
+    margin-left: 13%;
+}
+
+.margin-right{
+    margin-right: 13%;
+}

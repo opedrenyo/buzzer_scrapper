@@ -1,4 +1,38 @@
 {% extends "layouts/layout.html" %}
 {% block content%}
-    EQUIPOS
+<!-- Example split danger button -->
+<div class="dropdown pull-right margin-right">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Paises
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for row in countries %}
+        <li><a class="dropdown-item" href="#">{{row.name}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="margin-left margin-right margin-top">
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Forma</th>
+        <th scope="col">DMI</th>
+        <th scope="col">+</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for row in players %}
+      <tr>
+        <th scope="row">{{row.id}}</th>
+        <td>{{row.name}}</td>
+        <td>{{row.shape}}</td>
+        <td>{{row.dmi}}</td>
+        <td>desplegable</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+</table>
+</div>
 {% endblock %}
