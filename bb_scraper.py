@@ -212,7 +212,9 @@ class BB_Scraper():
     def export_country_season(self):
         bb_db_conn = BB_db(self.db_password)
         export_data = bb_db_conn.query_country_export(self.team_nation)
-        df_export = pd.DataFrame(export_data, columns=["Nationality", "ID_player", "Name", "Week", "Season", "DMI", "Shape"])
+        df_export = pd.DataFrame(export_data, columns=["Nationality", "ID_player", "Name", "Week", "Season", "DMI",
+                                                        "Shape", "Jumpshot", "Shotrange", "OutsideDefense","Handling", "Driving", "Passes","InsideShot",
+                                                        "InsideDefense", "Rebounds", "Blocks", "Resist", "FreeThrows"])
         dir_exists = os.path.exists(f"exports/{self.team_nation}")
         if not dir_exists:
             os.makedirs(f"exports/{self.team_nation}")
