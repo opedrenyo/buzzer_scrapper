@@ -43,8 +43,22 @@ class BB_db():
         insert_skills = """
                     INSERT INTO skills (id_player,check_date,jumpshot,shot_range,outside_defense,handling,driving,passes,inside_shot,inside_defense,rebounds,blocks,resist,free_throws) 
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT ON CONSTRAINT skills_pkey DO NOTHING;
-        """
+                    ON CONFLICT (id_player) DO UPDATE 
+                    SET 
+                    check_date = EXCLUDED.check_date,
+                    jumpshot = EXCLUDED.jumpshot,
+                    shot_range = EXCLUDED.shot_range,
+                    outside_defense = EXCLUDED.outside_defense,
+                    handling = EXCLUDED.handling,
+                    driving = EXCLUDED.driving,
+                    passes = EXCLUDED.passes,
+                    inside_shot = EXCLUDED.inside_shot,
+                    inside_defense = EXCLUDED.inside_defense,
+                    rebounds = EXCLUDED.rebounds,
+                    blocks = EXCLUDED.blocks,
+                    resist = EXCLUDED.resist,
+                    free_throws = EXCLUDED.free_throws;
+                    """
 
         for index, row in dataframe.iterrows():
             # si jumpshot tiene resultados asumimos que hay skills y grabamos, si no no para no llenar la bbdd de nulls
