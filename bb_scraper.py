@@ -77,7 +77,10 @@ class BB_Scraper():
             "China":5,
             "Misr":51,
             "Sudafrica":68,
-            "Marruecos":32
+            "Marruecos":32,
+            "Hayastan":87,
+            "Azerbaiyan":88,
+            "Bulgaria":36
         }
         
     def signin(self, username, password):
