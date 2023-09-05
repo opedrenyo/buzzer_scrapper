@@ -188,7 +188,7 @@ class BB_Scraper():
         elif option.strip() == '3':
             season = input("Introduzca el número de temporada" + newLine)
             # esto ya se pulirá para mostrar un calendario y elegir el dia directamente
-            dateInput = input("Introduzca la fecha del primer entreno de la temporada en formato DD/MM/YY" + newLine)
+            dateInput = input("Introduzca la fecha del primer entreno de la temporada en formato DD/MM/YYYY" + newLine)
             print("Inicializando calendario de la temporada " + season)
             self.initCalendar(season, dateInput)
         else:
