@@ -11,6 +11,7 @@
     </ul>
 </div>
 <div class="margin-left margin-right margin-top">
+<div id="selected-country" class="selected-country"></div>
 <table class="table">
     <thead>
       <tr>
@@ -18,7 +19,7 @@
         <th scope="col">Nombre</th>
         <th scope="col">Forma</th>
         <th scope="col">DMI</th>
-        <th scope="col">+</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody class="table-group-divider" id="table-body">
@@ -29,12 +30,14 @@
   // Get the elements
   var countryItems = document.querySelectorAll(".country-item");
   var tableBody = document.getElementById("table-body");
+  var selectedCountryDiv = document.getElementById("selected-country"); // Elemento para mostrar el país seleccionado
 
   // Add click event listeners to each country item in the dropdown
   countryItems.forEach(function (countryItem) {
       countryItem.addEventListener("click", function () {
           var selectedCountry = countryItem.textContent;
-          console.log('dropdown clicked: ' + selectedCountry)
+          selectedCountryDiv.textContent = `${selectedCountry}`; // Actualizar el contenido con el país seleccionado
+
           fetch('/get_players/' + selectedCountry)
               .then(function (response) {
                   return response.json();
@@ -58,11 +61,11 @@
     data.forEach(function (row) {
       var newRow = document.createElement("tr");
       newRow.innerHTML = `
-        <th scope="row">${row[1]}</th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
+        <th scope="row"><a href="/player/${row[1]}">${row[1]}</a></th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
         <td>${row[2]}</td> <!-- row[2] is the player name -->
         <td>${row[6]}</td> <!-- row[6] is the player's shape -->
         <td>${row[5]}</td> <!-- row[5] is the player's "DMI" -->
-        <td>${row[7] !== null ? '+' : '-'}</td> <!-- if there is data in row 8, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
+        <td>${row[7] !== null ? 'Habilidades disponibles' : ''}</td> <!-- if there is data in row 8, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
       `;
       tableBody.appendChild(newRow);
     });

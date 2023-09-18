@@ -1,7 +1,7 @@
 body{
-    background: #4ECDC4;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #556270, #4ECDC4);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #556270, #4ECDC4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #a9aaaa;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #dae5f0, #fcfdfd);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ddecfb, #f3f4f4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .margin-top{
@@ -20,4 +20,13 @@ body{
     height: auto;
     max-height: 200px;
     overflow-x: hidden;
+}
+
+.selected-country {
+    size:large;
+    font-weight: bold;
+}
+
+.orange {
+    background: #f6ad04;  /* fallback for old browsers */
 }
