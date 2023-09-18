@@ -6,7 +6,7 @@
     </button>
     <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
         {% for row in countries %}
-            <li><a class="dropdown-item" href="#">{{row[0]}}</a></li>
+            <li><a class="dropdown-item country-item">{{ row[0] }}</a></li>
         {% endfor %}
     </ul>
 </div>
@@ -21,17 +21,51 @@
         <th scope="col">+</th>
       </tr>
     </thead>
-    <tbody class="table-group-divider">
-        {% for row in players %}
-      <tr>
-        <th scope="row">{{row[1]}}</th>
-        <td>{{row[2]}}</td>
-        <td>{{row[7]}}</td>
-        <td>{{row[6]}}</td>
-        <td>desplegable</td>
-        {% endfor %}
-      </tr>
+    <tbody class="table-group-divider" id="table-body">
     </tbody>
 </table>
 </div>
+<script>
+  // Get the elements
+  var countryItems = document.querySelectorAll(".country-item");
+  var tableBody = document.getElementById("table-body");
+
+  // Add click event listeners to each country item in the dropdown
+  countryItems.forEach(function (countryItem) {
+      countryItem.addEventListener("click", function () {
+          var selectedCountry = countryItem.textContent;
+          console.log('dropdown clicked: ' + selectedCountry)
+          fetch('/get_players/' + selectedCountry)
+              .then(function (response) {
+                  return response.json();
+              })
+              .then(function (data) {
+                  // Update the table with the received data
+                  updateTable(data);
+              })
+              .catch(function (error) {
+                  console.error('Error:', error);
+              });
+      });
+  });
+
+  // Function to update the table with new data
+  function updateTable(data) {
+      // Clear the existing table rows
+      tableBody.innerHTML = '';
+
+    // Loop through the data and create new table rows
+    data.forEach(function (row) {
+      var newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <th scope="row">${row[1]}</th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
+        <td>${row[2]}</td> <!-- row[2] is the player name -->
+        <td>${row[6]}</td> <!-- row[6] is the player's shape -->
+        <td>${row[5]}</td> <!-- row[5] is the player's "DMI" -->
+        <td>${row[7] !== null ? '+' : '-'}</td> <!-- if there is data in row 8, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
+      `;
+      tableBody.appendChild(newRow);
+    });
+  }
+</script>
 {% endblock %}

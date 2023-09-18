@@ -24,10 +24,10 @@ def equipos():
 def operaciones():
     return render_template('operaciones.html')
 
-@app.route('/get_players/country')
+@app.route('/get_players/<country>')
 def get_players(country):
-    logging.info('Entramos a consultar los jugadores de ' + country)
     bb_db_conn = BB_db('ilovebasket14')
+    global players
     players = bb_db_conn.query_country_export(country)
     bb_db_conn.close()
     return jsonify(players)
