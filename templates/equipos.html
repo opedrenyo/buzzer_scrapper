@@ -61,7 +61,7 @@
     data.forEach(function (row) {
       var newRow = document.createElement("tr");
       newRow.innerHTML = `
-        <th scope="row"><a href="/player/${row[0]}">${row[0]}</a></th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
+        <th scope="row"><a href="https://buzzerbeater.com/player/${row[0]}/overview.aspx">${row[0]}</a></th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
         <td>${row[1]}</td> <!-- row[1] is the player name -->
         <td>${row[3]}</td> <!-- row[3] is the player's shape -->
         <td>${row[2]}</td> <!-- row[2] is the player's "DMI" -->
