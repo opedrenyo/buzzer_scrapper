@@ -146,3 +146,16 @@ class BB_db():
 
         return self.cur.fetchall()
     
+    def query_get_players(self, country):
+        select_query = f"""SELECT p.id_player, p.name, p2.dmi, p2.shape, s2.jumpshot
+            FROM players p INNER JOIN performance p2 on p.id_player=p2.id_player
+            INNER JOIN countries c on p.id_country=c.id_country 
+            inner join seasons s on p2.id_season=s.id_season
+            LEFT JOIN skills s2 on s2.id_player=p.id_player
+            WHERE c.country = '{country}' and s.id_season=(select max(id_season)from seasons)
+           	and p2.week= ROUND(ABS(EXTRACT(EPOCH FROM (NOW() - start_date)) / 604800))+1 
+            ORDER BY p.name;"""
+        self.cur.execute(select_query)
+
+        return self.cur.fetchall()
+    

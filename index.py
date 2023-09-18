@@ -28,7 +28,7 @@ def operaciones():
 def get_players(country):
     bb_db_conn = BB_db('ilovebasket14')
     global players
-    players = bb_db_conn.query_country_export(country)
+    players = bb_db_conn.query_get_players(country)
     bb_db_conn.close()
     return jsonify(players)
 

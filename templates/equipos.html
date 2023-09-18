@@ -61,11 +61,11 @@
     data.forEach(function (row) {
       var newRow = document.createElement("tr");
       newRow.innerHTML = `
-        <th scope="row"><a href="/player/${row[1]}">${row[1]}</a></th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
-        <td>${row[2]}</td> <!-- row[2] is the player name -->
-        <td>${row[6]}</td> <!-- row[6] is the player's shape -->
-        <td>${row[5]}</td> <!-- row[5] is the player's "DMI" -->
-        <td>${row[7] !== null ? 'Habilidades disponibles' : ''}</td> <!-- if there is data in row 8, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
+        <th scope="row"><a href="/player/${row[0]}">${row[0]}</a></th> <!-- row[1] is the player ID, se podria poner que al clickar lleve a BB -->
+        <td>${row[1]}</td> <!-- row[1] is the player name -->
+        <td>${row[3]}</td> <!-- row[3] is the player's shape -->
+        <td>${row[2]}</td> <!-- row[2] is the player's "DMI" -->
+        <td>${row[4] !== null ? 'Habilidades disponibles' : ''}</td> <!-- if there is data in row 4, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
       `;
       tableBody.appendChild(newRow);
     });
