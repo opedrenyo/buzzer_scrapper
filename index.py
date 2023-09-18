@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, logging, render_template, jsonify, request
 from dbconn import BB_db
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 countries = []
 players = []
@@ -18,17 +18,19 @@ def equipos():
     global countries
     countries = bb_db_conn.get_countries()
     bb_db_conn.close()
-    return render_template('equipos.html', countries=countries, players = players)
+    return render_template('equipos.html', countries=countries)
 
 @app.route('/operaciones')
 def operaciones():
     return render_template('operaciones.html')
 
-def get_players(id_country):
+@app.route('/get_players/country')
+def get_players(country):
+    logging.info('Entramos a consultar los jugadores de ' + country)
     bb_db_conn = BB_db('ilovebasket14')
-    global players 
-    players = bb_db_conn.query_country_export(id_country)
+    players = bb_db_conn.query_country_export(country)
     bb_db_conn.close()
+    return jsonify(players)
 
 
 
