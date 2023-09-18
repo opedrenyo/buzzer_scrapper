@@ -1,4 +1,4 @@
-from flask import Flask, logging, render_template, jsonify, request
+from flask import Flask, render_template, jsonify
 from dbconn import BB_db
 import pandas as pd
 
@@ -20,9 +20,9 @@ def equipos():
     bb_db_conn.close()
     return render_template('equipos.html', countries=countries)
 
-@app.route('/operaciones')
-def operaciones():
-    return render_template('operaciones.html')
+@app.route('/calendario')
+def calendario():
+    return render_template('calendario.html')
 
 @app.route('/get_players/<country>')
 def get_players(country):

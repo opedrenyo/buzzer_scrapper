@@ -15,13 +15,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" aria-current="page" href="{{ url_for('home') }}">Temporada</a>
+              <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" aria-current="page" href="{{ url_for('home') }}">Novedades</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.endpoint == 'equipos' %}active{% endif %}" href="{{ url_for('equipos') }}">Equipos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.endpoint == 'operaciones' %}active{% endif %}" href="{{ url_for('operaciones') }}">Operaciones</a>
+              <a class="nav-link {% if request.endpoint == 'calendario' %}active{% endif %}" href="{{ url_for('calendario') }}">Calendario</a>
             </li>    
           </ul>
         </div>
