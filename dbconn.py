@@ -153,7 +153,7 @@ class BB_db():
             inner join seasons s on p2.id_season=s.id_season
             LEFT JOIN skills s2 on s2.id_player=p.id_player
             WHERE c.country = '{country}' and s.id_season=(select max(id_season)from seasons)
-           	and p2.week= ROUND(ABS(EXTRACT(EPOCH FROM (NOW() - start_date)) / 604800))+1 
+           	and p2.week= FLOOR(ABS(EXTRACT(EPOCH FROM (NOW() - start_date)) / 604800))+1 
             ORDER BY p.name;"""
         self.cur.execute(select_query)
 

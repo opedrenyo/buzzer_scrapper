@@ -68,6 +68,16 @@
         <td>${row[4] !== null ? 'Habilidades disponibles' : ''}</td> <!-- if there is data in row 4, means we have his skills, lo indicaremos con un + o un -, si se clicka mostrar -->
       `;
       tableBody.appendChild(newRow);
+
+      var rowDetail = document.createElement("tr");
+      rowDetail.innerHTML = `
+        <th scope="row">
+          <div>
+            aqui va el div de tableau con el grafico de dmi y forma por semana, al lado skills si hay
+          </div>
+        </th>
+      `;
+      tableBody.appendChild(rowDetail);
     });
   }
 </script>
